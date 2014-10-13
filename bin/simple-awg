@@ -1,0 +1,32 @@
+#!/bin/sh
+
+#SITE set by acq400_knobs
+ON=$1
+WAVEFORM=${2:-/usr/local/awgdata/id.dat}
+
+PHYS_WAVEFORM=/tmp/awg.phys
+
+# possibility for user to override settings
+if [ -e /mnt/local/simple-awg.conf ]; then
+	source /mnt/local/simple-awg.conf
+fi
+length() {
+    ls -l $1  | awk '{ print $5 }'
+}    
+
+
+CMAP=$(tr , \  </sys/module/acq420fmc/parameters/ao420_mapping)
+permute $CMAP <$WAVEFORM >$PHYS_WAVEFORM
+
+LENB=$(length $PHYS_WAVEFORM)
+
+let LENS=$LENB/8
+
+DST=/dev/acq400.$SITE.hb/00
+
+set.sys /sys/module/acq420fmc/parameters/ao420_dma_threshold 40000
+mmap -f $DST -l $LENB -w <$PHYS_WAVEFORM
+set.sys /dev/acq400.$SITE.knobs/playloop_length $LENS 1
+
+
+

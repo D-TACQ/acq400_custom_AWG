@@ -1,0 +1,24 @@
+#!/bin/bash
+# SOS : simple one shot
+DC=$(date +%y%m%d%H%M)
+SEQ=99
+PKG=custom_awg
+PACKAGES=../../PACKAGES
+
+rm -Rf opkg/*
+mkdir -p opkg/usr/local/bin \
+	opkg/usr/local/init \
+	opkg/usr/local/CARE \
+	opkg/usr/local/awgdata 
+
+cp CARE/* opkg/usr/local/CARE
+cp bin/* opkg/usr/local/bin
+cp init/* opkg/usr/local/init
+cp -a awgdata/* opkg/usr/local/awgdata
+
+
+tar cvzf release/${SEQ}-${PKG}-${DC}.tgz -C opkg .
+ls -l release/${SEQ}-${PKG}-${DC}.tgz
+rm -f ${PACKAGES}/${SEQ}-${PKG}*
+cp release/${SEQ}-${PKG}-${DC}.tgz ${PACKAGES}
+

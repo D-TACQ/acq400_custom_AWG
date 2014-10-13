@@ -1,0 +1,54 @@
+#!/bin/sh
+
+make_ftp_server() {
+cat - >>/etc/inetd.conf <<EOF
+21 stream tcp nowait root ftpd ftpd -w /usr/local/awgdata
+EOF
+}
+
+make_single_ch_server() {
+ch=$(printf "%02d" $1)
+cat - >>/etc/inetd.conf <<EOF
+540$ch stream tcp nowait root stdin2file stdin2file /usr/local/awgdata/ch/ch$ch
+EOF
+}
+
+
+MAKE_SERVER_DONE=0
+
+make_server() {
+	if [ $MAKE_SERVER_DONE -eq 0 ]; then	
+		make_ftp_server
+		for ch in $(seq $1 $2)
+		do
+			make_single_ch_server $ch
+		done
+		let MAKE_SERVER_DONE=1
+	fi
+}
+
+make_server_type() {
+	case $MTYPE in
+	40)
+		make_server 1 4;;
+	41)	
+		make_server 1 32;;
+	esac
+}
+
+for site in /etc/acq400/*
+do
+	if [ -e $site/MTYPE ]; then
+		MTYPE=$(cat $site/MTYPE)
+		case $MTYPE in
+		40|41)	rm -f $site/awg
+			ln -s /usr/local/bin/simple-awg $site/awg
+			make_server_type $MTYPE;;
+		esac
+	fi
+done
+
+
+kill -9 $(ps | grep 'inetd /etc/inetd.conf' | awk '{ print $1 }' | head -n 1)
+inetd /etc/inetd.conf
+
