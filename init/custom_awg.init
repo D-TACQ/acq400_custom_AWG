@@ -9,6 +9,7 @@ EOF
 make_single_ch_server() {
 ch=$(printf "%02d" $1)
 cat - >>/etc/inetd.conf <<EOF
+5400 stream rtcp nowait root bb bb load
 540$ch stream tcp nowait root stdin2file stdin2file /usr/local/awgdata/ch/ch$ch
 EOF
 }
