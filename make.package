@@ -13,6 +13,7 @@ mkdir -p opkg/usr/local/bin \
 
 cp CARE/* opkg/usr/local/CARE
 cp bin/* opkg/usr/local/bin
+cp ../CUSTOM_DPG/bin/bb.sha1sum opkg/usr/local/bin
 cp init/* opkg/usr/local/init
 cp -a awgdata/* opkg/usr/local/awgdata
 
