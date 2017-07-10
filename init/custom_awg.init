@@ -10,6 +10,8 @@ make_raw_server() {
 cat - >>/etc/inetd.conf <<EOF
 54000 stream rtcp nowait root bb bb load
 54200 stream tcp nowait root bb.sha1sum bb.sha1sum 1
+54001 stream rtcp nowait root bb bb load --mode 1
+54002 stream rtcp nowait root bb bb load --mode 2
 EOF
 }
 
