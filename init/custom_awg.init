@@ -39,10 +39,12 @@ make_server() {
 
 make_server_type() {
 	case $MTYPE in
-	40)
+	40|42)
 		make_server 1 4;;
 	41)	
 		make_server 1 32;;
+	6a|6A)
+	   make_server 1 8;;
 	esac
 }
 
@@ -51,7 +53,7 @@ do
 	if [ -e $site/MTYPE ]; then
 		MTYPE=$(cat $site/MTYPE)
 		case $MTYPE in
-		40|41)	rm -f $site/awg
+		6A|6a|4*)	rm -f $site/awg
 			ln -s /usr/local/bin/simple-awg $site/awg
 			make_server_type $MTYPE;;
 		esac
