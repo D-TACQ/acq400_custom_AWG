@@ -1,5 +1,8 @@
 #!/bin/sh
 
+
+[ -e /mnt/local/sysconfig/acq400.sh ] && source /mnt/local/sysconfig/acq400.sh
+
 make_ftp_server() {
 cat - >>/etc/inetd.conf <<EOF
 21 stream tcp nowait root ftpd ftpd -w /usr/local/awgdata
