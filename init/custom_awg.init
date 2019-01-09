@@ -17,6 +17,8 @@ cat - >>/etc/inetd.conf <<EOF
 54202 stream tcp nowait root bb bb load --mode 2
 54203 stream tcp nowait root bb bb load --mode 1 --concurrent 1
 54204 stream tcp nowait root bb bb dump
+54205 stream tcp nowait root bb bb load --mode 0
+54206 stream tcp nowait root bb bb load --mode 0 --concurrent 1
 EOF
 }
 
