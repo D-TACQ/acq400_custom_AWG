@@ -34,8 +34,6 @@ MAKE_SERVER_DONE=0
 
 make_server() {
 	if [ $MAKE_SERVER_DONE -eq 0 ]; then	
-		make_ftp_server
-		make_raw_server
 		for ch in $(seq $1 $2)
 		do
 			make_single_ch_server $ch
@@ -54,6 +52,9 @@ make_server_type() {
 	   make_server 1 8;;
 	esac
 }
+
+make_ftp_server
+make_raw_server
 
 for site in /etc/acq400/*
 do
