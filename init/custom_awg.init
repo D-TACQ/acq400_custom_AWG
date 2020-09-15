@@ -9,6 +9,15 @@ cat - >>/etc/inetd.conf <<EOF
 EOF
 }
 
+PS=/usr/local/bin/procServ
+BBPID=/var/run/bbserver.pid
+BBPORT=4242
+
+run_resident_server() {
+	/usr/local/epics/scripts/wait_ioc_ready
+	$PS -c / -p $BBPID $BBPORT bb --port 54201 load --mode 1
+}
+
 make_raw_server() {
 cat - >>/etc/inetd.conf <<EOF
 54000 stream tcp nowait root bb bb load
@@ -20,6 +29,11 @@ cat - >>/etc/inetd.conf <<EOF
 54205 stream tcp nowait root bb bb load --mode 0
 54206 stream tcp nowait root bb bb load --mode 0 --concurrent 1
 EOF
+
+if [ "x$AWG_RESIDENT_SERVER" = "xy" ]; then
+	sed -ie 's/54201/#54201/' /etc/inetd.conf
+	run_resident_server &
+fi
 }
 
 make_single_ch_server() {
