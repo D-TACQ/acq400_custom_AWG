@@ -10,12 +10,14 @@ EOF
 }
 
 PS=/usr/local/bin/procServ
+BB=/usr/local/bin/bb
 BBPID=/var/run/bbserver.pid
-BBPORT=4242
+BBPORT=4243
 
 run_resident_server() {
 	/usr/local/bin/wait_ioc_ready
-	$PS -c / -p $BBPID $BBPORT bb --port 54201 load --mode 1
+	cat "bb_server $BBPORT/tcp # bb resident server log port" >>/etc/services
+	$PS -c / -p $BBPID $BBPORT $BB --port 54201 load --mode 1
 }
 
 make_raw_server() {
