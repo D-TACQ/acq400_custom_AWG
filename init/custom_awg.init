@@ -15,9 +15,16 @@ BBPID=/var/run/bbserver.pid
 BBPORT=4243
 
 run_resident_server() {
-	/usr/local/bin/wait_ioc_ready
-	cat "bb_server $BBPORT/tcp # bb resident server log port" >>/etc/services
-	$PS -c / -p $BBPID $BBPORT $BB --port 54201 load --mode 1
+cat - >/usr/local/bin/bb-server <<EOF
+#!/bin/sh
+while [ ! -e /var/www/d-tacq/rcS-complete ]; do
+    sleep 2
+done
+$BB --port 54201 load --mode 1
+EOF
+chmod a+rx /usr/local/bin/bb-server
+	echo "bb_server $BBPORT/tcp # bb resident server log port" >>/etc/services
+	$PS -c / -p $BBPID $BBPORT /usr/local/bin/bb-server
 }
 
 make_raw_server() {
