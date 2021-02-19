@@ -43,6 +43,7 @@ if [ "x$AWG_RESIDENT_SERVER" = "xy" ]; then
 	sed -ie 's/54201/#54201/' /etc/inetd.conf
 	run_resident_server &
 fi
+bb_stream --port 54207 | logger -t bb_stream &
 }
 
 make_single_ch_server() {
