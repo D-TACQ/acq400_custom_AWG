@@ -37,13 +37,13 @@ cat - >>/etc/inetd.conf <<EOF
 54204 stream tcp nowait root bb bb dump
 54205 stream tcp nowait root bb bb load --mode 0
 54206 stream tcp nowait root bb bb load --mode 0 --concurrent 1
+54207 stream tcp wait root bb_stream bb_stream x
 EOF
 
 if [ "x$AWG_RESIDENT_SERVER" = "xy" ]; then
 	sed -ie 's/54201/#54201/' /etc/inetd.conf
 	run_resident_server &
 fi
-bb_stream --port 54207 | logger -t bb_stream &
 }
 
 make_single_ch_server() {
