@@ -37,7 +37,7 @@ if [ "$(basename $0)" = "awg" ]; then
 		case $key in
 		VERBOSE) VERBOSE=$(validate $val 0 3);;
 		SOFT_TRIGGER)
-			SOFT_TRIGGER=$(validate $val 0 1);;
+			SOFT_TRIGGER=$(validate $val 0 10);;
 		*)
 			echo "ERROR: $pair not supported"
 			exit 1;;
