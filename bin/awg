@@ -1,0 +1,51 @@
+#!/bin/sh
+
+
+SETTINGS=/dev/shm/awg_settings
+if [ ! -e ${SETTINGS} ]; then
+	echo "SOFT_TRIGGER=1" > ${SETTINGS}
+fi
+source $SETTINGS
+
+SOFT_TRIGGER=${SOFT_TRIGGER:-1}
+
+if [ "$(basename $0)" = "awg" ]; then
+
+	if [ "x$1" = "x" ]; then
+		cat ${SETTINGS}
+		exit 0
+	fi
+
+	validate() {
+		let xx=$1
+		let x1=$2
+		let x2=$3
+		if [ $xx -lt $x1 ]; then
+			echo $x1
+		elif [ $xx -gt $x2 ]; then
+			echo $x2
+		else
+			echo $xx
+		fi
+	}
+	NEWS=""
+
+	for pair in $*
+	do
+		key=${pair%=*}
+		val=${pair#*=}
+		case $key in
+		VERBOSE) VERBOSE=$(validate $val 0 3);;
+		SOFT_TRIGGER)
+			SOFT_TRIGGER=$(validate $val 0 1);;
+		*)
+			echo "ERROR: $pair not supported"
+			exit 1;;
+		esac
+	done
+	NEWS="SOFT_TRIGGER=$SOFT_TRIGGER VERBOSE=$VERBOSE"
+
+	echo ${NEWS} > ${SETTINGS}
+fi	
+
+

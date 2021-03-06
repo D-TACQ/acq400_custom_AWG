@@ -59,6 +59,8 @@ MAKE_SERVER_DONE=0
 make_server() {
 	echo 0 > "/etc/acq400/0/dist_bufferlen_play"
 	echo 0 > "/etc/acq400/0/dist_bufferlen_load"
+	ln -s /usr/local/bin/awg /etc/acq400/0
+	/usr/local/bin/awg
 	
 	if [ $MAKE_SERVER_DONE -eq 0 ]; then	
 		for ch in $(seq $1 $2)
