@@ -14,7 +14,10 @@ fi
 FLEN=$(ls -l $DAT | awk '{ print $5 }' )
 CMD="cat $DAT"
 LEN=$FLEN
-while [ $LEN -lt 2097152 ]; do
+BL=$(cat /sys/module/acq420fmc/parameters/bufferlen)
+BL4=$((BL*4 - FLEN))
+
+while [ $LEN -le $BL4 ]; do
 	CMD="$CMD $DAT"
 	LEN=$((LEN+FLEN))
 done
