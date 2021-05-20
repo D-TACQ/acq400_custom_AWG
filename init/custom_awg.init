@@ -39,6 +39,7 @@ cat - >>/etc/inetd.conf <<EOF
 54206 stream tcp nowait root bb bb load --mode 0 --concurrent 1
 54207 stream tcp wait root bb_stream bb_stream --inetd_tcp_wait 1
 54208 stream tcp wait root awg_continuous_hp awg_continuous_hp -
+54209 stream tcp wait root awg_continuous_hp awg_continuous_hp - 1
 EOF
 
 if [ "x$AWG_RESIDENT_SERVER" = "xy" ]; then

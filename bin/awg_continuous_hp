@@ -1,9 +1,16 @@
 #!/bin/sh
 
-SITE=${SITE:-1}
+eval $(get.site 0 distributor)
+SITE=${sites%%,*}
 set.site $SITE AWG:MODE:ABO 1
 
-DAT=${1:-/mnt/local/dat_files/64CH_10V_15000_SHORTED.dat}
+DAT=${1:--}
+TRG=${2:-0}
+
+if [ "$DAT" = "-" ]; then
+	cat - > /tmp/awg_continuous_hp.dat
+	DAT=/tmp/awg_continuous_hp.dat
+fi
 FLEN=$(ls -l $DAT | awk '{ print $5 }' )
 CMD="cat $DAT"
 LEN=$FLEN
@@ -16,8 +23,10 @@ echo LEN $LEN
 
 set.site 0 dist_bufferlen_play $((LEN/4))
 
-$CMD | nc localhost 54205
+$CMD | bb load --mode 0
 
-soft_trigger
+[ $TRG -ne 0 ] && soft_trigger
+
+
 
 
