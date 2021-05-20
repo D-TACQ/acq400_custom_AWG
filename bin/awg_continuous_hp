@@ -1,0 +1,23 @@
+#!/bin/sh
+
+SITE=${SITE:-1}
+set.site $SITE AWG:MODE:ABO 1
+
+DAT=${1:-/mnt/local/dat_files/64CH_10V_15000_SHORTED.dat}
+FLEN=$(ls -l $DAT | awk '{ print $5 }' )
+CMD="cat $DAT"
+LEN=$FLEN
+while [ $LEN -lt 2097152 ]; do
+	CMD="$CMD $DAT"
+	LEN=$((LEN+FLEN))
+done
+echo CMD $CMD
+echo LEN $LEN
+
+set.site 0 dist_bufferlen_play $((LEN/4))
+
+$CMD | nc localhost 54205
+
+soft_trigger
+
+
