@@ -1,0 +1,13 @@
+#!/bin/sh
+DAT=${1:-/mnt/local/dat_files/4CH_10V_16384_POFFSET_PRODTEST.dat}
+PORT=${2:-54205}
+LEN=$(stat -c %s $DAT)
+BL=$(cat /sys/module/acq420fmc/parameters/bufferlen)
+# pattern MUST be 4 buffers (4MB with 1MB buffers, so 32x132k)
+RPT=$((BL*4/LEN))
+
+echo DAT: $DAT LEN: $LEN BL: $BL RPT: $RPT
+
+for x in $(seq $RPT); do cat $DAT; done | nc localhost 54205
+
+
