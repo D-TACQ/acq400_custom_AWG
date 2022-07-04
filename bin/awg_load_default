@@ -1,0 +1,28 @@
+#!/bin/sh
+
+FILE=/mnt/local/awg_default.dat
+
+case $# in
+2)
+	FILE=$1
+	PORT=$2;;	
+1)
+	PORT=$1;;
+*)
+	exit 1;;
+esac
+
+if [ $PORT -lt 54201 ] || [ $PORT -gt 54207 ]; then
+	/usr/bin/logger -t awg ERROR invalid port $PORT
+	exit 1
+fi
+if [ ! -e $FILE ]; then
+	/usr/bin/logger -t awg ERROR FILE $FILE does not exist
+	exit 1
+fi
+
+/usr/bin/logger -t awg awg_load_default $FILE $PORT
+
+exec nc localhost $PORT < $FILE
+
+
