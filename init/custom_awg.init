@@ -31,6 +31,14 @@ make_raw_server() {
 cat - >>/etc/inetd.conf <<EOF
 54000 stream tcp nowait root bb bb load
 54200 stream tcp nowait root bb.sha1sum bb.sha1sum 1
+EOF
+
+
+if [ "x$AWG_RESIDENT_SERVER" = "xy" ]; then
+	run_resident_server &
+else
+cat - >>/etc/inetd.conf <<EOF
+# mode 0 : continuous, 1:oneshot 2:oneshot-autorearm
 54201 stream tcp nowait root bb bb load --mode 1
 54202 stream tcp nowait root bb bb load --mode 2
 54203 stream tcp nowait root bb bb load --mode 1 --concurrent 1
@@ -40,11 +48,15 @@ cat - >>/etc/inetd.conf <<EOF
 54207 stream tcp wait root bb_stream bb_stream --inetd_tcp_wait 1
 54208 stream tcp nowait root awg_continuous_hp awg_continuous_hp -
 54209 stream tcp nowait root awg_continuous_hp awg_continuous_hp - 1
-EOF
+# abcde
+54210 stream tcp nowait root stdin2file /dev/acq400.0.abcde
+54212 stream tcp nowait root bb bb load --mode 2 --abcde A
+54222 stream tcp nowait root bb bb load --mode 2 --abcde B
+54232 stream tcp nowait root bb bb load --mode 2 --abcde C
+54242 stream tcp nowait root bb bb load --mode 2 --abcde D
+54252 stream tcp nowait root bb bb load --mode 2 --abcde E
 
-if [ "x$AWG_RESIDENT_SERVER" = "xy" ]; then
-	sed -ie 's/54201/#54201/' /etc/inetd.conf
-	run_resident_server &
+EOF
 fi
 }
 
