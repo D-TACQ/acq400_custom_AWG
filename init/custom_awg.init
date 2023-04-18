@@ -49,7 +49,7 @@ cat - >>/etc/inetd.conf <<EOF
 54208 stream tcp nowait root awg_continuous_hp awg_continuous_hp -
 54209 stream tcp nowait root awg_continuous_hp awg_continuous_hp - 1
 # abcde
-54210 stream tcp nowait root stdin2file /dev/acq400.0.abcde
+54210 stream tcp nowait root stdin2file stdin2file /dev/acq400.0.abcde
 54212 stream tcp nowait root bb bb load --mode 2 --abcde A
 54222 stream tcp nowait root bb bb load --mode 2 --abcde B
 54232 stream tcp nowait root bb bb load --mode 2 --abcde C
