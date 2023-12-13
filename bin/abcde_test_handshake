@@ -1,0 +1,18 @@
+#!/usr/bin/env expect
+log_user 0
+set abcde [open /dev/acq400.0.abcde r+]
+spawn -open $abcde
+set nbuf 0
+while { 1 } {
+	for { set ii 0 } { $ii < $argc } { incr ii } {
+		set seg [lindex $argv $ii]
+		send "$seg\r"
+		puts "set $seg"
+		if { $nbuf > 3 } {
+			expect "$seg" {
+				puts "ret $seg"
+			}
+		}
+		incr nbuf
+	}
+}

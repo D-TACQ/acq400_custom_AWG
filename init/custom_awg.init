@@ -51,10 +51,15 @@ cat - >>/etc/inetd.conf <<EOF
 # abcde
 54210 stream tcp nowait root stdin2file stdin2file /dev/acq400.0.abcde
 54212 stream tcp nowait root bb bb load --mode 2 --abcde A
+54215 stream tcp nowait root bb bb load --mode 0 --abcde A
 54222 stream tcp nowait root bb bb load --mode 2 --abcde B
+54225 stream tcp nowait root bb bb load --mode 0 --abcde B
 54232 stream tcp nowait root bb bb load --mode 2 --abcde C
+54235 stream tcp nowait root bb bb load --mode 0 --abcde C
 54242 stream tcp nowait root bb bb load --mode 2 --abcde D
+54245 stream tcp nowait root bb bb load --mode 0 --abcde D
 54252 stream tcp nowait root bb bb load --mode 2 --abcde E
+54255 stream tcp nowait root bb bb load --mode 0 --abcde E
 
 EOF
 fi
