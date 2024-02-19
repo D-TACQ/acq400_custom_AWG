@@ -1,0 +1,26 @@
+#!/bin/sh
+
+SRC=${SRC:-/usr/local/awgdata/}
+DST=${DST:-/mnt/local/AWG}
+
+inflate() {
+	cat $1 > $2
+	for x in $(seq 2 $3); do
+		cat $1 >> $2
+	done
+
+}
+if [ ! -e ${DST}/inflate_done ]; then
+	mkdir ${DST}
+	gunzip -c $SRC/0M5.gz > $DST/0M5.dat
+
+	inflate $DST/0M5.dat $DST/1M0.dat 2
+	inflate $DST/0M5.dat $DST/2M0.dat 4
+	inflate $DST/0M5.dat $DST/4M0.dat 8
+	inflate $DST/0M5.dat $DST/8M0.dat 16
+	inflate $DST/0M5.dat $DST/16M.dat  32
+
+	echo rm /usr/local/CARE/05M.gz
+	touch ${DST}/inflate_done
+fi
+
