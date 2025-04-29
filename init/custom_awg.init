@@ -84,6 +84,7 @@ MAKE_SERVER_DONE=0
 make_server() {
 	echo 0 > "/etc/acq400/0/dist_bufferlen_play"
 	echo 0 > "/etc/acq400/0/dist_bufferlen_load"
+	echo 0 > "/etc/acq400/0/playloop_len_disable"
 	ln -s /usr/local/bin/awg /usr/local/bin/awg_load_default /etc/acq400/0
 	/usr/local/bin/awg
 	
