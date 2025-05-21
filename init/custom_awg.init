@@ -56,7 +56,7 @@ EOF
 
 MAX_SEG=$(cat /sys/module/acq420fmc/parameters/max_seg)
 case $MAX_SEG in
-[A-Z])
+[B-Z])
 	( p2=54222; p0=54225
 	for seg in B C D E F G H I J K L M N O P Q R S T U V W X Y Z; do
 		echo $p2 stream tcp nowait root bb bb load --mode 2 --abcde $seg
@@ -116,7 +116,8 @@ do
 	if [ -e $site/MTYPE ]; then
 		MTYPE=$(cat $site/MTYPE)
 		case $MTYPE in
-		6A|6a|4*)	rm -f $site/awg
+		6A|6a|4*)
+			rm -f $site/awg
 			ln -s /usr/local/bin/simple-awg $site/awg
 			make_server_type $MTYPE;;
 		esac
