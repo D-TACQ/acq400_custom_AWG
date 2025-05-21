@@ -99,7 +99,7 @@ make_server() {
 
 make_server_type() {
 	case $MTYPE in
-	40|42)
+	40|42|44)
 		make_server 1 4;;
 	41)	
 		make_server 1 32;;
