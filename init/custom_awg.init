@@ -12,7 +12,7 @@ EOF
 PS=/usr/local/bin/procServ
 BB=/usr/local/bin/bb
 BBPID=/var/run/bbserver.pid
-BBPORT=4243
+BBPORT=4244
 
 run_resident_server() {
 cat - >/usr/local/bin/bb-server <<EOF
