@@ -38,8 +38,12 @@ if [ "x$AWG_RESIDENT_SERVER" = "xy" ]; then
 	run_resident_server &
 else
 cat - >>/etc/inetd.conf <<EOF
-# mode 0 : continuous, 1:oneshot 2:oneshot-autorearm
 54201 stream tcp nowait root bb bb load --mode 1
+EOF
+fi
+
+cat - >>/etc/inetd.conf <<EOF
+# mode 0 : continuous, 1:oneshot 2:oneshot-autorearm
 54202 stream tcp nowait root bb bb load --mode 2
 54203 stream tcp nowait root bb bb load --mode 1 --concurrent 1
 54204 stream tcp nowait root bb bb dump
@@ -68,7 +72,7 @@ case $MAX_SEG in
 *)
 	;;
 esac
-fi
+
 }
 
 make_single_ch_server() {
