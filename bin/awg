@@ -3,7 +3,7 @@
 
 SETTINGS=/dev/shm/awg_settings
 if [ ! -e ${SETTINGS} ]; then
-	echo "XSOFT_TRIGGER=1" > ${SETTINGS}
+	echo "SOFT_TRIGGER=1 VERBOSE=0" > ${SETTINGS}
 fi
 source $SETTINGS
 
